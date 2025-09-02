@@ -22,15 +22,15 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false, 
+    select: false, // agr aap user ko find karoge to by default password field nhi jayega
   },
   socketId: {
     type: String,
-  },
+  }, // socketId ka aage ham use karne vale hai with live tracking, driver ya captain ki location ko ham share kar sake with user
 });
 
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {expiresIn: '24h'});
   return token;
 };
 
