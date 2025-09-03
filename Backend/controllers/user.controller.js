@@ -12,6 +12,12 @@ module.exports.registerUser = async (req, res, next) => {
 
   const { fullname, email, password } = req.body;
 
+  const isUserAlreadyExist = await userModel.findOne({ email });
+
+  if(isUserAlreadyExist) {
+    return res.status(400).json({ message: "User with this email already exists" });
+  }
+
   const isUserAlready = await userModel.findOne({ email });
 
   if (isUserAlready) {
@@ -69,7 +75,7 @@ module.exports.loginUser = async (req, res, next) => {
 
 module.exports.getUserProfile = async (req, res, next) => {
   
-  res.status(200).json(req.user);
+  res.status(200).json(req.user); 
 
 }
 
@@ -79,6 +85,7 @@ module.exports.logoutUser = async (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
   await blackListTokenModel.create({ token }); 
+  res.clearCookie('token');
 
   res.status(200).json({ message: 'Logged out successfully' });
 }

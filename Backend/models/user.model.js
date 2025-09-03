@@ -22,11 +22,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false, // agr aap user ko find karoge to by default password field nhi jayega
+    select: false, 
   },
   socketId: {
     type: String,
-  }, // socketId ka aage ham use karne vale hai with live tracking, driver ya captain ki location ko ham share kar sake with user
+  }, 
 });
 
 userSchema.methods.generateAuthToken = function () {
